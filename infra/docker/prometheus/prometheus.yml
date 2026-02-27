@@ -1,0 +1,23 @@
+global:
+  scrape_interval: 5s
+
+scrape_configs:
+  - job_name: 'feature-group-service'
+    static_configs:
+      - targets: ['feature-group-service:8001']
+    metrics_path: /metrics
+
+  - job_name: 'feature-store-service'
+    static_configs:
+      - targets: ['feature-store-service:8002']
+    metrics_path: /metrics
+
+  - job_name: 'lineage-service'
+    static_configs:
+      - targets: ['lineage-service:8003']
+    metrics_path: /metrics
+
+  - job_name: 'materialization-worker'
+    static_configs:
+      - targets: ['materialization-worker:9101']
+    metrics_path: /metrics

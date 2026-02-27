@@ -1,0 +1,10 @@
+[project]
+name = "fs-sdk"
+version = "0.1.0"
+description = "Internal SDK for feature-store services"
+requires-python = ">=3.11"
+dependencies = ["requests>=2.32.0"]
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+packages = ["sdk"]

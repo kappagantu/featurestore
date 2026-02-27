@@ -1,0 +1,21 @@
+[project]
+name = "feature-group-service"
+version = "0.3.0"
+description = "Feature group metadata service"
+requires-python = ">=3.11"
+dependencies = [
+  "fastapi>=0.111.0",
+  "uvicorn>=0.30.0",
+  "pydantic>=2.7.0",
+  "sqlalchemy>=2.0.31",
+  "psycopg[binary]>=3.2.1",
+  "alembic>=1.13.2",
+  "PyJWT[crypto]>=2.9.0",
+  "prometheus-client>=0.20.0",
+  "opentelemetry-api>=1.27.0",
+  "opentelemetry-sdk>=1.27.0",
+  "opentelemetry-exporter-otlp>=1.27.0"
+]
+
+[tool.setuptools]
+packages = ["app"]

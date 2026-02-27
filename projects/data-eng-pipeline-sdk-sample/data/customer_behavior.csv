@@ -1,0 +1,4 @@
+entity_id,event_ts,avg_order_value_30d,orders_7d,is_high_value
+cust-101,2026-02-26T20:00:00+00:00,210.3,5,true
+cust-102,2026-02-26T20:00:00+00:00,52.8,1,false
+cust-103,2026-02-26T20:00:00+00:00,130.0,2,true
