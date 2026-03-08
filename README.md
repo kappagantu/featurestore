@@ -79,6 +79,8 @@ Target state:
 
 The following diagram represents the target architecture direction:
 
+![Target Architecture](./Architechure-diagram.png)
+
 ```mermaid
 flowchart LR
     C["Client"] --> SDK1["SDK (HTTP)"]
