@@ -66,6 +66,74 @@ make sample-run-sdk
 - Grafana: [http://localhost:3002](http://localhost:3002) (`admin` / `admin`)
   - Pre-provisioned dashboard: `Feature Store / Feature Store Observability`
 
+## Architecture Roadmap
+
+This repository is intentionally built as a local-first demo platform (`docker compose` + LocalStack + Marquez) and is being extended toward a full AWS production deployment.
+
+Current state:
+- End-to-end local development and demo workflows
+- Async materialization, lineage emission, OIDC option, and observability baseline
+
+Target state:
+- Production-grade AWS deployment with HTTP external APIs, internal gRPC data-plane flows, event-driven materialization, and managed data services
+
+The following diagram represents the target architecture direction:
+
+```mermaid
+flowchart LR
+    C["Client"] --> SDK1["SDK (HTTP)"]
+    SDK1 --> WAF["AWS WAF"]
+    WAF --> APIGW["Amazon API Gateway"]
+
+    subgraph VPC["Virtual Private Cloud (VPC)"]
+      FG["Feature Group"]
+      FS["Feature Store"]
+      FL["Feature Lineage"]
+      SSO["SSO Provider (Custom)"]
+
+      AFG["Aurora PostgreSQL"]
+      AFL["Aurora PostgreSQL"]
+      SSO_DDB["DynamoDB"]
+
+      S3["S3"]
+      DDB["DynamoDB"]
+
+      SDK2["Internal SDK (gRPC)"]
+      KIN["Kinesis Streams"]
+      FLINK["Flink"]
+      FEJ["Feature Engineering Jobs"]
+      EVB["EventBridge"]
+      GLUE["Glue Job"]
+      LSQS["SQS (Lineage Events)"]
+    end
+
+    APIGW --> FG
+    APIGW --> FS
+    APIGW --> FL
+    APIGW --> SSO
+
+    SDK2 <--> FG
+    SDK2 <--> FS
+
+    FG --> AFG
+    FL --> AFL
+    SSO --> SSO_DDB
+
+    FS --> S3
+    FS --> DDB
+    FS -. "Materialization Event" .-> EVB
+    EVB --> GLUE
+    GLUE --> S3
+    GLUE --> DDB
+
+    KIN --> FLINK --> FEJ
+    FEJ --> EVB
+    FEJ --> LSQS
+    LSQS --> FL
+```
+
+This repo is also intended as a demo of architecture and platform engineering skills, from local developer experience to production-oriented cloud design.
+
 ## Tenant and Auth Headers
 
 All non-health endpoints now expect tenant context:
